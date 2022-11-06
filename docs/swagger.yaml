@@ -1,0 +1,10 @@
+openapi: 3.0.0
+info:
+  title: PRSP Gateway - Sms Service
+  summary: API endpoints for Prsp Gateway.
+  description: Please select the server below depending on whether you are using Heroku or running the application locally.
+
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000/api

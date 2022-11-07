@@ -43,6 +43,7 @@ export default class ContactsHelper {
      */
     public static async listContacts(order: any, pagination: any, relations?: any, filters?: any):
         Promise<[Contact[], number]> {
+        console.log(filters)
         return await this.contactRepository.findAndCount({
             order: order,
             ...filters,
@@ -113,7 +114,7 @@ export default class ContactsHelper {
     private static async getPhoneNumberTelco(phoneNumber: string,
         transactionalEntityManager: EntityManager): Promise<number | null> {
         const prefix: string = this.extractContactTelco(phoneNumber)
-        await RedisCache.saveToCache()
+        // await RedisCache.saveToCache()
         console.log("Prefix =>", prefix)
         if (prefix) {
             //Check if prefix exists in the cache

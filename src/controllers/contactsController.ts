@@ -7,10 +7,12 @@ import ContactGroupHelper from "../helpers/contacts/contactGroupHelper";
 import FilesWorker from "../workers/filesWorker";
 import ContactsHelper from "../helpers/contacts/ContactsHelper";
 import { ContactGroup } from "../database/entities/contacts/contactGroup";
+import {getOrdering, getPagination} from "../middlewares/requestOptions";
 
 
 export default class ContactsController {
-    static async uploadCsv(req: any, res: Response) {
+    static async uploadCsv(req: Request, res: Response) {
+        // @ts-ignore
         const { files: { file } } = req;
         let record: any = []
         let keys: any = null
@@ -40,5 +42,58 @@ export default class ContactsController {
                 })
             }
         })
+    }
+
+    static async listContactGroups(req: Request, res: Response){
+        const ordering = getOrdering(req)
+        const pagination = getPagination(req)
+        try {
+            const [contactGroups, count ] = await ContactGroupHelper.listContactGroups(
+                ordering,
+                pagination
+            )
+            RequestUtils.handlePaginationResponse(res, req, 200)({
+                contactGroups
+            }, count)
+        } catch (error: any){
+            RequestUtils.handleRequestFailure(res, 400)({
+                message: error.message
+            })
+        }
+    }
+
+    static async getContactGroupById(req: Request, res: Response) {
+        const { params: { id } } = req
+        try {
+            const contactGroup: ContactGroup = await ContactGroupHelper.getContactGroupById(id)
+            RequestUtils.handleRequestSuccess(res, 200)({
+                contactGroup: contactGroup
+            })
+        } catch ( error: any ){
+            RequestUtils.handleRequestFailure(res, 400)({
+                message: error.message
+            })
+        }
+    }
+
+    static async getGroupContacts(req: Request, res: Response){
+        const { params: { id } } = req
+        const ordering = getOrdering(req)
+        const pagination = getPagination(req)
+        try {
+            const [ contacts, count ] = await ContactsHelper.listContacts(
+                ordering,
+                pagination,
+                {relations: ['group']},
+                { where: { group: {id: parseInt(id) } } }
+            )
+            RequestUtils.handlePaginationResponse(res, req, 200)({
+                contacts
+            }, count)
+        } catch ( error: any ) {
+            RequestUtils.handleRequestFailure(res, 400)({
+                message: error.message
+            })
+        }
     }
 }

@@ -9,4 +9,19 @@ router.post(
     ContactsController.uploadCsv
 )
 
+router.get(
+    '/groups',
+    ContactsController.listContactGroups
+)
+
+router.get(
+    '/group/:id',
+    ContactsController.getContactGroupById
+)
+
+router.get(
+    '/group/:id/contacts',
+    ContactsController.getGroupContacts
+)
+
 export default router;

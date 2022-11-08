@@ -11,6 +11,12 @@ import {getOrdering, getPagination} from "../middlewares/requestOptions";
 
 
 export default class ContactsController {
+    /**
+     * Upload a csv
+     * Creates a contact group, group mapping and constacts
+     * @param req
+     * @param res
+     */
     static async uploadCsv(req: Request, res: Response) {
         // @ts-ignore
         const { files: { file } } = req;
@@ -44,6 +50,11 @@ export default class ContactsController {
         })
     }
 
+    /**
+     * Get list of group contacts
+     * @param req
+     * @param res
+     */
     static async listContactGroups(req: Request, res: Response){
         const ordering = getOrdering(req)
         const pagination = getPagination(req)
@@ -62,6 +73,11 @@ export default class ContactsController {
         }
     }
 
+    /**
+     * Get group contact by id
+     * @param req
+     * @param res
+     */
     static async getContactGroupById(req: Request, res: Response) {
         const { params: { id } } = req
         try {
@@ -76,6 +92,11 @@ export default class ContactsController {
         }
     }
 
+    /**
+     * Get a list of group contacts
+     * @param req
+     * @param res
+     */
     static async getGroupContacts(req: Request, res: Response){
         const { params: { id } } = req
         const ordering = getOrdering(req)
@@ -84,7 +105,7 @@ export default class ContactsController {
             const [ contacts, count ] = await ContactsHelper.listContacts(
                 ordering,
                 pagination,
-                {relations: ['group']},
+                { relations: ['group'] },
                 { where: { group: {id: parseInt(id) } } }
             )
             RequestUtils.handlePaginationResponse(res, req, 200)({

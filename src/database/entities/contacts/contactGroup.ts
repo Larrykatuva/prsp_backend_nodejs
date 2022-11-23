@@ -4,7 +4,7 @@ import {
     Column,
     ManyToOne,
     OneToMany,
-    OneToOne
+    OneToOne, JoinColumn
 } from "typeorm";
 import {User} from "../auth/user";
 import {Contact} from "./contact";
@@ -40,5 +40,6 @@ export class ContactGroup {
         () => ContactMapping,
         contactMapping => contactMapping.group
     )
+    @JoinColumn()
     mapping!: ContactMapping
 }

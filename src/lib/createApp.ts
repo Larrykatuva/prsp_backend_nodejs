@@ -32,7 +32,6 @@ export const createApp = async () => {
             console.log("Database connected..")
         })
         .catch((error) => console.log(error))
-
     /**
    * Routes goes here.
    */

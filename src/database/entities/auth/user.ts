@@ -11,6 +11,8 @@ import {
 import {Role} from "./role"
 import {Prefix} from "../telcos/prefix";
 import {ContactGroup} from "../contacts/contactGroup";
+import {Transaction} from "../float/transaction";
+import {Topup} from "../float/topup";
 
 @Entity()
 export class User {
@@ -54,5 +56,17 @@ export class User {
         (contactGroups) => contactGroups.owner
     )
     contactGroups!: ContactGroup[]
+
+    @OneToMany(
+        () => Transaction,
+        (transaction) => transaction.owner
+    )
+    transactions!: Transaction[]
+
+    @OneToMany(
+        () => Topup,
+        (topup) => topup.owner
+    )
+    topups!: Transaction[]
 
 }

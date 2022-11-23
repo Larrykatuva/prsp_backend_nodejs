@@ -13,7 +13,7 @@ export default class PrefixHelper {
      * @param prefix
      */
     public static async createPrefix(prefix: Prefix): Promise<Prefix> {
-        const exists = await this.prefixRepository.findOneBy({
+        const exists: Prefix | null = await this.prefixRepository.findOneBy({
             prefix: prefix.prefix
         })
         if (exists) throw new Error(`Prefix: ${prefix.prefix} already exists`)
@@ -58,6 +58,11 @@ export default class PrefixHelper {
         })
     }
 
+    /**
+     * Get telco by prefix
+     * @param prefix
+     * @private
+     */
     private static async getTelcoByPrefix(prefix: string): Promise<Prefix | null> {
         return await this.prefixRepository.findOne({
             where: {

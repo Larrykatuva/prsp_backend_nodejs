@@ -13,6 +13,7 @@ import {Prefix} from "../telcos/prefix";
 import {ContactGroup} from "../contacts/contactGroup";
 import {Transaction} from "../float/transaction";
 import {Topup} from "../float/topup";
+import {TelcoService} from "../telcos/telcoService";
 
 @Entity()
 export class User {
@@ -68,5 +69,11 @@ export class User {
         (topup) => topup.owner
     )
     topups!: Transaction[]
+
+    @OneToMany(
+        () => TelcoService,
+        (telcoService) => telcoService.owner
+    )
+    telcoServices!: TelcoService[]
 
 }

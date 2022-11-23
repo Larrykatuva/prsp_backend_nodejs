@@ -10,6 +10,9 @@ import {ContactMapping} from "./entities/contacts/contactMapping";
 import {Transaction} from "./entities/float/transaction";
 import {Topup} from "./entities/float/topup";
 import {FloatBalance} from "./entities/float/float";
+import {TelcoService} from "./entities/telcos/telcoService";
+import {Plan} from "./entities/rates/plan";
+import {Package} from "./entities/rates/package";
 
 export const databaseConfig = new DataSource({
     type: "postgres",
@@ -21,7 +24,8 @@ export const databaseConfig = new DataSource({
     synchronize: true,
     logging: true,
     entities: [User, Role, Country, Telco, Prefix,
-        ContactGroup, Contact, ContactMapping, Transaction, Topup, FloatBalance],
+        ContactGroup, Contact, ContactMapping, Transaction,
+        Topup, FloatBalance, TelcoService, Plan, Package],
     subscribers: [],
     migrations: [],
 })

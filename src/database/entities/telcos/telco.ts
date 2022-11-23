@@ -4,21 +4,23 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     Column,
-    ManyToOne, OneToMany
+    ManyToOne, OneToMany, ManyToMany, JoinTable
 } from "typeorm";
-import { Country } from "./country";
-import { Prefix } from "./prefix";
+import {Country} from "./country";
+import {Prefix} from "./prefix";
 import {Contact} from "../contacts/contact";
+import {TelcoService} from "./telcoService";
+import {Package} from "../rates/package";
 
 @Entity()
 export class Telco {
     @PrimaryGeneratedColumn()
     id!: string
 
-    @Column({ unique: true })
+    @Column({unique: true})
     name!: string
 
-    @Column({ unique: true })
+    @Column({unique: true})
     code!: string
 
     @CreateDateColumn()
@@ -44,4 +46,18 @@ export class Telco {
         (contact) => contact.telco
     )
     contacts!: Contact[]
+
+    @OneToMany(
+        () => TelcoService,
+        (telcoService) => telcoService.telco
+    )
+    telcoServices!: TelcoService[]
+
+    @ManyToMany(
+        () => Package,
+        telcoPackage => telcoPackage.telcos
+    )
+    @JoinTable()
+    packages!: Package[]
+
 }
